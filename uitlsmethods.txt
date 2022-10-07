@@ -1,0 +1,310 @@
+1. 
+
+Finding elements by using function that take argument of By class
+
+private boolean isElementPresent(WebDriver driver, By by)
+try{
+driver.findElement(by);
+return true;
+}
+catch(Exception e)
+{
+return false;
+}
+}
+
+2. 
+
+This function will fetch message on Pop-up
+
+public static String getPopupMessage(final WebDriver driver) {
+String message = null;
+try {
+Alert alert = driver.switchTo().alert();
+message = alert.getText();
+alert.accept();
+} catch (Exception e) {
+message = null;
+}
+System.out.println("message"+message);
+return message;
+}
+
+This function will Canceling pop-up in Selenium-WebDriver
+
+
+public static String cancelPopupMessageBox(final WebDriver driver) {
+String message = null;
+try {
+Alert alert = driver.switchTo().alert();
+message = alert.getText();
+alert.dismiss();
+} catch (Exception e) {
+message = null;
+}
+return message;
+}
+
+3. 
+
+Reading ToolTip text in in Selenium-WebDriver
+In this
+public static String tooltipText(WebDriver driver, By locator){
+String tooltip = driver.findElement(locator).getAttribute("title");
+return tooltip;
+}
+
+4.
+
+Selecting Radio Button in Selenium-WebDriver
+
+
+public static void selectRadioButton(WebDriver driver, By locator, String value){ List select = driver.findElements(locator);
+for (WebElement element : select)
+{
+if (element.getAttribute("value").equalsIgnoreCase(value)){
+element.click();
+}
+}
+
+5.
+
+Selecting CheckBox in Selenium-WebDriver
+
+
+public static void selectCheckboxes(WebDriver driver, By locator,String value)
+{
+List abc = driver.findElements(locator);
+List list = new ArrayListArrays.asList(value.split(",")));
+for (String check : list){
+for (WebElement chk : abc){
+if(chk.getAttribute("value").equalsIgnoreCase(check)){
+chk.click();
+}}}}
+
+6.  
+
+Selecting Dropdown in Selenium-WebDriver
+
+public static void selectDropdown(WebDriver driver, By locator, String value){
+new Select (driver.findElement(locator)).selectByVisibleText(value); }
+
+7.
+
+Selecting searched dropdown in Selenium-WebDriver
+
+public static void selectSearchDropdown(WebDriver driver, By locator, String value){
+driver.findElement(locator).click();
+driver.findElement(locator).sendKeys(value);
+driver.findElement(locator).sendKeys(Keys.TAB);
+}
+
+8.
+
+Uploading file using  Selenium-WebDriver
+
+public static void uploadFile(WebDriver driver, By locator, String path){
+driver.findElement(locator).sendKeys(path);
+}
+
+9. 
+
+Downloading file in Selenium-WebDriver
+
+Here we will click on a link and will download the file with a predefined name at some specified location.
+public static void downloadFile(String href, String fileName) throws Exception{
+URL url = null;
+URLConnection con = null;
+int i;
+url = new URL(href);
+con = url.openConnection();
+// Here we are specifying the location where we really want to save the file.
+File file = new File(".//OutputData//" + fileName);
+BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
+BufferedOutputStream bos = new BufferedOutputStream(
+new FileOutputStream(file));
+while ((i = bis.read()) != -1) {
+bos.write(i);
+}
+bos.flush();
+bis.close();
+}
+
+10.
+
+Pressing any Keyboard key using Action builder class of Selenium WebDriver
+
+WebDriver has rewarded us with one class Action to handle all keyboard and Mouse action. While creating a action builder its constructor takes WebDriver as argument. Here I am taking example of pressing Control key
+Actions builder = new Actions(driver);
+builder.keyDown(Keys.CONTROL).click(someElement).click(someOtherElement).keyUp(Keys.CONTROL).build().perform();
+
+When we press multiple keys or action together then we need to bind all in a single command by using build() method and perform() method intend us to perform the action.
+In the same way you can handle other key actions.
+
+11.
+
+Drag and Drop action in Selenium Webdriver
+
+In this we need to specify both WebElement  like Source and target and for draganddrop Action class has a method with two argument so let see how it normally look like
+WebElement element = driver.findElement(By.name("source"));
+WebElement target = driver.findElement(By.name("target"));
+(new Actions(driver)).dragAndDrop(element, target).perform();
+
+12.
+
+Wait for the element to be clickable ignoring the StaleElementReferenceException
+public boolean waitForElementToBeClickableBool(WebDriver    driver, By attributeValue, int waitTime) {	
+		boolean flag = false;
+		try{
+			new WebDriverWait(driver, waitTime).ignoring(StaleElementReferenceException.class)
+					.until(ExpectedConditions.elementToBeClickable(attributeValue));
+			flag=true;
+			return flag;
+			
+		}catch(Exception Ex){
+			return flag;
+		}
+	}
+
+13.
+
+Wait for the Alert present ignoring the StaleElementReferenceException
+public boolean waitForAlertPresent(WebDriver driver, int waitTime) {
+		boolean flag = false;
+		new WebDriverWait(driver, waitTime).ignoring(StaleElementReferenceException.class)
+				.until(ExpectedConditions.alertIsPresent());
+		try{
+			driver.switchTo().alert();
+			return flag = true;
+		}catch(Exception Ex){
+			return flag;
+		}
+
+
+14.
+
+Wait for the element to be visible ignoring the StaleElementReferenceException
+	/**
+	 * This method is used to wait for element till visibility of element.
+	 * 
+	 * @param driver
+	 * @param attributeValue
+	 *            - provide locator value of element till it is visible on
+	 *            application and then click that element.
+	 * @param waitTime
+	 *            - provide maximum wait time in seconds for driver
+	 */
+	public boolean waitForElementToBeVisible(WebDriver driver, By attributeValue, int waitTime) {
+		boolean flag = false;
+		try {
+			new WebDriverWait(driver, waitTime).ignoring(StaleElementReferenceException.class)
+					.until(ExpectedConditions.visibilityOfElementLocated(attributeValue));
+			flag=true;
+			return flag;
+		} catch (Exception Ex) {
+			return flag;
+		}
+	}
+
+15.
+
+Move to Element and Click Action in Selenium
+	public void MouseClickActionMoveToElement(WebDriver driver, By attributeValue) {
+		try {
+			if 
+//The below method is defined above
+(waitForElementToBeClickableBool(driver, attributeValue, maxTimeout)) {
+				WebElement element = driver.findElement(attributeValue);
+				//element.click();
+				Actions builder = new Actions(driver);
+				builder.moveToElement(element).click().build().perform();
+System.out.println("Able to locate and click to element !")
+				
+			} else {
+				System.out.println("Not able to locate the element !")
+			}
+		} catch (Exception Ex) {
+			System.out.println("Exception occured");
+		}
+
+16.
+
+Select a value in dropdown by Text
+	/**
+	 * This method is for simple dropdown selection by visibleText
+	 * 
+	 * @param driver
+	 * @param dropDownID-This
+	 *            is the unique attribute to find an dropdownelement
+	 * @param dropDownValue-This
+	 *            is the text to search in dropdown
+	 */
+	public static void dropDownSelectionByText(WebDriver driver, By dropDownID, String dropDownValue) {
+		try {
+			WebElement element = null;
+			new WebDriverWait(driver, 5).ignoring(StaleElementReferenceException.class)
+					.until(ExpectedConditions.elementToBeClickable(dropDownID));
+			element = driver.findElement(dropDownID);
+			Select dropDown = new Select(element);
+			dropDown.selectByVisibleText(dropDownValue);
+		}
+		catch (StaleElementReferenceException ex) {
+			System.out.println("Exception while selecting a value from dropdown" + ex.getMessage());
+		}
+	}
+
+17.
+
+Select a value in dropdown by Value
+
+/**
+	 * This method is for simple dropdown selection by value
+	 * 
+	 * @param driver
+	 * @param dropDownID-This
+	 *            is the unique attribute to find an dropdownelement
+	 * @param dropDownValue-This
+	 *            is the text to search in dropdown
+	 */
+	public static void dropDownSelectionByValue(WebDriver driver, By dropDownID, String dropDownValue) {
+		try {
+			WebElement element = null;
+			new WebDriverWait(driver, 5).ignoring(StaleElementReferenceException.class)
+					.until(ExpectedConditions.elementToBeClickable(dropDownID));
+			element = driver.findElement(dropDownID);
+			Select dropDown = new Select(element);
+			dropDown.selectByValue(dropDownValue);
+		}
+		catch (StaleElementReferenceException ex) {
+			System.out.println("Exception while selecting a value from dropdown" + ex.getMessage());
+		}
+	}
+
+18.
+
+Select a value in dropdown by Index
+/**
+	 * This method is for simple dropdown selection by index
+	 * 
+	 * @param driver
+	 * @param dropDownID-This
+	 *            is the unique attribute to find an dropdownelement
+	 * @param dropDownValue-This
+	 *            is the text to search in dropdown
+	 */
+	public static void dropDownSelectionByIndex(WebDriver driver, By dropDownID, int dropDownValue) {
+		try {
+			WebElement element = null;
+			new WebDriverWait(driver, 5).ignoring(StaleElementReferenceException.class)
+					.until(ExpectedConditions.elementToBeClickable(dropDownID));
+			element = driver.findElement(dropDownID);
+			Select dropDown = new Select(element);
+			dropDown.selectByIndex(dropDownValue);
+		}
+		catch (StaleElementReferenceException ex) {
+			System.out.println("Exception while selecting a value from dropdown" + ex.getMessage());
+		}
+	}
+
+19.
+
